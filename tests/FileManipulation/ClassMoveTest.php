@@ -340,6 +340,33 @@ class ClassMoveTest extends \Psalm\Tests\TestCase
                     'Ns\A' => 'Ns\B',
                 ],
             ],
+            'thisShouldNotPass' => [
+                '<?php
+                    namespace Ns1\Ns2;
+
+                    use Ns\B;
+
+                    class A extends B
+                    {
+                        public function foo(): void
+                        {
+                        }
+                    }',
+                '<?php
+                    namespace Ns1\Ns2\Ns3;
+
+                    use Ns\B;
+
+                    class B extends B
+                    {
+                        public function foo(): void
+                        {
+                        }
+                    }',
+                [
+                    'Ns1\Ns2\A' => 'Ns1\Ns2\Ns3\B',
+                ]
+            ],
             'moveClassIntoNamespace' => [
                 '<?php
                     use Exception;
